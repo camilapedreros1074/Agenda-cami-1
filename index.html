@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Agenda Cami</title>
+<style>
+:root{
+ --bg:#fff8fc; --card:#ffffff; --ink:#463b57; --muted:#8b8095; --line:#eadff0;
+ --pink:#ff7eb6; --pink2:#ffd3e5; --purple:#9c7cf4; --purple2:#e6ddff;
+ --blue:#8ed7ff; --blue2:#dff4ff; --cream:#fff7ef; --danger:#ff6f91; --ok:#7fcfa8;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:linear-gradient(180deg,#fff8fc 0%,#f9fbff 100%);color:var(--ink)}
+button,input,select,textarea{font:inherit}
+.app{display:grid;grid-template-columns:230px 1fr;gap:18px;max-width:1180px;margin:0 auto;padding:18px;min-height:100vh}
+.sidebar{background:linear-gradient(180deg,#f4eaff,#fff0f7 60%,#edf9ff);border:1px solid var(--line);border-radius:28px;padding:18px;box-shadow:0 10px 30px rgba(89,59,121,.08)}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 2px 18px;border-bottom:1px solid rgba(120,90,140,.14)}
+.avatar{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff;font-weight:800;box-shadow:0 6px 18px rgba(156,124,244,.25)}
+.brand small{display:block;color:var(--muted);margin-top:3px}
+nav{display:grid;gap:8px;margin-top:16px}.navbtn{border:0;background:transparent;text-align:left;padding:12px 13px;border-radius:16px;color:var(--ink);font-weight:700;cursor:pointer}.navbtn.active{background:#fff;box-shadow:0 6px 18px rgba(75,50,96,.08)}
+.main{background:rgba(255,255,255,.72);backdrop-filter:blur(8px);border:1px solid var(--line);border-radius:28px;padding:20px;box-shadow:0 10px 30px rgba(89,59,121,.06)}
+.hero{background:linear-gradient(135deg,#ffd9ea 0%,#e7ddff 55%,#dff5ff 100%);border-radius:24px;padding:18px;border:1px solid rgba(255,255,255,.7)}
+.heroTop{display:flex;justify-content:space-between;gap:14px;align-items:flex-start;flex-wrap:wrap}.hero h1{margin:4px 0 2px;font-size:1.5rem}.hero p{margin:0;color:#665b72}
+.actions{display:flex;gap:10px;flex-wrap:wrap}.primary,.secondary{border:0;border-radius:16px;padding:11px 15px;font-weight:800;cursor:pointer}.primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:#fff}.secondary{background:#fff;color:var(--ink);border:1px solid var(--line)}
+.priority{margin-top:14px;background:#fff;border-radius:18px;padding:13px 15px;display:flex;justify-content:space-between;gap:12px;align-items:center}.priority strong{font-size:.98rem}.badge{padding:6px 10px;border-radius:999px;background:#f6efff;color:#6b4fb2;font-size:.8rem;font-weight:800}
+.controls{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:8px 12px;font-size:.9rem;cursor:pointer}.chip.active{background:linear-gradient(135deg,#ffe0ec,#e8e0ff);border-color:transparent}
+.grid{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}.section{background:#fff;border:1px solid var(--line);border-radius:22px;padding:16px}.section h2{font-size:1rem;margin:0 0 12px}.task{display:grid;grid-template-columns:88px 1fr auto;gap:12px;align-items:center;border:1px solid var(--line);border-radius:18px;padding:13px;margin-top:10px;background:#fff}.taskTime{font-weight:800;color:#7f7290}.taskTitle{font-weight:800}.meta{font-size:.84rem;color:var(--muted);margin-top:4px}.tag{font-size:.78rem;font-weight:800;border-radius:999px;padding:6px 9px}.tag.trabajo{background:var(--purple2)}.tag.familia{background:var(--blue2)}.tag.personal{background:var(--pink2)}.tag.compras{background:#fff0d6}.tag.proyectos{background:#f3e7ff}.tag.otros{background:#eef1f4}
+.taskControls{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.mini{border:0;border-radius:10px;padding:6px 9px;background:#f7f2fa;color:var(--ink);font-size:.8rem;cursor:pointer}.done .taskTitle{text-decoration:line-through;opacity:.55}
+.progressBox{background:linear-gradient(135deg,#fff4fa,#f5f0ff);border-radius:18px;padding:14px}.bar{height:10px;background:#efe7f3;border-radius:999px;overflow:hidden;margin-top:8px}.bar span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--pink),var(--purple),var(--blue));border-radius:999px}.nextBox{margin-top:14px;background:linear-gradient(135deg,#f7e9ff,#eaf7ff);padding:14px;border-radius:18px}.nextBox strong{display:block;margin-top:5px}.quick{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.quick button{border:1px solid var(--line);background:#fff;border-radius:16px;padding:12px;text-align:left;cursor:pointer}
+.modal{position:fixed;inset:0;background:rgba(47,34,60,.35);display:none;align-items:flex-end;justify-content:center;padding:14px;z-index:30}.modal.open{display:flex}.sheet{width:min(680px,100%);background:#fff;border-radius:26px;padding:18px;max-height:92vh;overflow:auto}.formGrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.field{display:grid;gap:6px}.field label{font-size:.85rem;color:var(--muted);font-weight:700}.field input,.field select,.field textarea{width:100%;border:1px solid var(--line);border-radius:14px;padding:11px 12px;background:#fff;color:var(--ink)}.field textarea{min-height:88px;resize:vertical}.full{grid-column:1/-1}.switchRow{display:flex;align-items:center;gap:10px}.modalActions{display:flex;gap:10px;justify-content:flex-end;margin-top:14px}.feedback{font-size:.85rem;color:#6c5c76;margin-top:8px}.empty{color:var(--muted);padding:16px;text-align:center}
+.notes textarea{width:100%;min-height:130px;border:1px solid var(--line);border-radius:16px;padding:12px}.weekGrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px}.dayCard{border:1px solid var(--line);border-radius:16px;padding:10px;min-height:120px;background:#fff}.dayCard h3{font-size:.85rem;margin:0 0 6px}.dayCard p{font-size:.78rem;color:var(--muted);margin:4px 0}
+@media(max-width:850px){.app{grid-template-columns:1fr;padding:10px}.sidebar{min-height:auto;padding:12px}.brand{border:0;padding-bottom:8px}nav{grid-template-columns:repeat(4,1fr);overflow-x:auto}.navbtn{text-align:center;padding:10px 8px;font-size:.78rem;white-space:nowrap}.grid{grid-template-columns:1fr}.task{grid-template-columns:70px 1fr}.task>.tag{grid-column:2}.formGrid{grid-template-columns:1fr}.full{grid-column:auto}.weekGrid{grid-template-columns:1fr 1fr}.main{padding:14px}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand"><div class="avatar">C</div><div><strong>Agenda Cami</strong><small>Mi vida organizada ✨</small></div></div>
+    <nav>
+      <button class="navbtn active" data-view="today">☀️ Hoy</button>
+      <button class="navbtn" data-view="tomorrow">🌤️ Mañana</button>
+      <button class="navbtn" data-view="week">🗓️ Semana</button>
+      <button class="navbtn" data-view="pending">📌 Pendientes</button>
+      <button class="navbtn" data-view="rrss">📱 RRSS</button>
+      <button class="navbtn" data-view="notes">📝 Notas</button>
+      <button class="navbtn" data-view="progress">📈 Progreso</button>
+      <button class="navbtn" data-view="menu">🥗 Menú</button>
+    </nav>
+  </aside>
+  <main class="main">
+    <section class="hero">
+      <div class="heroTop"><div><small id="dateLabel"></small><h1>Hola Cami 🌷</h1><p>Una cosa a la vez, con claridad y sin sobrecargarte.</p></div>
+      <div class="actions"><button class="secondary" id="whatNow">✨ ¿Qué hago ahora?</button><button class="primary" id="openAdd">＋ Agregar actividad</button></div></div>
+      <div class="priority"><div><small>Prioridad principal</small><strong id="priorityText">—</strong></div><span class="badge">Enfoque del día</span></div>
+    </section>
+
+    <div class="controls" id="filters">
+      <button class="chip active" data-filter="Todas">Todas</button><button class="chip" data-filter="Trabajo">Trabajo</button><button class="chip" data-filter="Familia">Familia</button><button class="chip" data-filter="Personal">Personal</button><button class="chip" data-filter="Proyectos">Proyectos</button><button class="chip" data-filter="Compras">Compras</button>
+    </div>
+
+    <section id="content"></section>
+  </main>
+</div>
+
+<div class="modal" id="modal"><div class="sheet">
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:12px"><h2 style="margin:0">Agregar actividad</h2><button class="secondary" id="closeModal">Cerrar</button></div>
+  <div class="formGrid" style="margin-top:14px">
+    <div class="field full"><label>Actividad</label><input id="fName" placeholder="Ej: Preparar presentación IA"></div>
+    <div class="field"><label>Fecha</label><input id="fDate" type="date"></div>
+    <div class="field"><label>Hora</label><input id="fTime" type="time"></div>
+    <div class="field"><label>Prioridad</label><select id="fPriority"><option>🔴 Urgente</option><option>🟠 Alta</option><option selected>🟡 Media</option><option>🟢 Baja</option></select></div>
+    <div class="field"><label>Categoría</label><select id="fCategory"><option>Trabajo</option><option>Personal</option><option>Familia</option><option>Compras</option><option>Proyectos</option><option>Otros</option></select></div>
+    <div class="field"><label>Duración estimada</label><input id="fDuration" placeholder="Ej: 45 min"></div>
+    <div class="field"><label>Estado</label><select id="fStatus"><option>Pendiente</option><option>Programada</option><option>En progreso</option><option>Esperando respuesta</option></select></div>
+    <div class="field full"><label>Notas / subtareas</label><textarea id="fNotes" placeholder="Puedes escribir pasos, subtareas o detalles"></textarea></div>
+    <div class="field full"><label class="switchRow"><input id="fReminder" type="checkbox"> 🔔 Quiero recordatorio</label></div>
+    <div class="field" id="reminderOptions" style="display:none"><label>Recordarme</label><select id="fReminderWhen"><option value="10">10 min antes</option><option value="30">30 min antes</option><option value="60">1 hora antes</option><option value="custom">Hora específica</option></select></div>
+    <div class="field" id="customReminder" style="display:none"><label>Hora del aviso</label><input id="fReminderTime" type="time"></div>
+  </div>
+  <div class="feedback" id="formFeedback">Los avisos dentro de esta web se mostrarán cuando la tengas abierta. Para alertas reales del iPhone, conviene usar recordatorios del sistema.</div>
+  <div class="modalActions"><button class="secondary" id="cancelAdd">Cancelar</button><button class="primary" id="saveAdd">Guardar actividad</button></div>
+</div></div>
+
+<script>
+const todayStr=()=>new Date().toISOString().slice(0,10);
+const addDays=(s,n)=>{const d=new Date(s+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+const key='agendaCamiDataV4';
+const defaultTasks=[
+{id:1,name:'Dejar lista la página web',date:'2026-08-08',time:'19:30',priority:'🔴 Urgente',category:'Proyectos',status:'En progreso',duration:'90 min',notes:'Revisar funcionamiento y dejar lista para publicar.',done:false,reminder:true,reminderWhen:'30'},
+{id:2,name:'Preparar tacos para la once',date:'2026-08-08',time:'20:30',priority:'🟠 Alta',category:'Personal',status:'Pendiente',duration:'45 min',notes:'',done:false,reminder:false},
+{id:3,name:'Juntarme con mi amiga si confirma',date:'',time:'',priority:'🟢 Baja',category:'Personal',status:'Esperando respuesta',duration:'',notes:'Solo si responde.',done:false,reminder:false},
+{id:4,name:'Preparar desayuno y tomar desayuno',date:'2026-08-09',time:'09:00',priority:'🟠 Alta',category:'Familia',status:'Programada',duration:'60 min',notes:'',done:false,reminder:true,reminderWhen:'10'},
+{id:5,name:'Estar con mis hijos',date:'2026-08-09',time:'10:00',priority:'🟠 Alta',category:'Familia',status:'Programada',duration:'2 h',notes:'',done:false,reminder:false},
+{id:6,name:'Preparar el almuerzo',date:'2026-08-09',time:'12:00',priority:'🟠 Alta',category:'Familia',status:'Programada',duration:'90 min',notes:'',done:false,reminder:false},
+{id:7,name:'Ir al supermercado',date:'2026-08-09',time:'',priority:'🟠 Alta',category:'Compras',status:'Pendiente',duration:'60 min',notes:'',done:false,reminder:false},
+{id:8,name:'Bañar y preparar a los chicos para el jardín',date:'2026-08-09',time:'18:00',priority:'🔴 Urgente',category:'Familia',status:'Pendiente',duration:'60 min',notes:'Dejar ropa y cosas del jardín listas.',done:false,reminder:true,reminderWhen:'30'},
+{id:9,name:'Seguir preparando la presentación de inteligencia artificial',date:'2026-08-09',time:'20:00',priority:'🟠 Alta',category:'Proyectos',status:'Pendiente',duration:'90 min',notes:'Explicar cómo la estoy aprendiendo de manera simple y práctica.',done:false,reminder:true,reminderWhen:'10'}
+];
+let state=JSON.parse(localStorage.getItem(key)||'null')||{tasks:defaultTasks,notes:'',menu:'',rrss:''};
+let currentView='today',currentFilter='Todas';
+function save(){localStorage.setItem(key,JSON.stringify(state));}
+function prettyDate(s){if(!s)return '';return new Intl.DateTimeFormat('es-CL',{weekday:'long',day:'numeric',month:'long'}).format(new Date(s+'T12:00:00'));}
+function priorityRank(p){return {'🔴 Urgente':1,'🟠 Alta':2,'🟡 Media':3,'🟢 Baja':4}[p]||9}
+function viewDate(){const t=todayStr();return currentView==='tomorrow'?addDays(t,1):t}
+function filteredTasks(){let arr=state.tasks.slice();if(currentView==='today')arr=arr.filter(t=>t.date===todayStr());else if(currentView==='tomorrow')arr=arr.filter(t=>t.date===addDays(todayStr(),1));else if(currentView==='pending')arr=arr.filter(t=>!t.date);if(currentFilter!=='Todas'&&['today','tomorrow','pending'].includes(currentView))arr=arr.filter(t=>t.category===currentFilter);return arr.sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)||(a.time||'99:99').localeCompare(b.time||'99:99'));}
+function tagClass(c){return c.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')}
+function taskCard(t){return `<div class="task ${t.done?'done':''}" data-id="${t.id}"><div class="taskTime">${t.time||'—'}</div><div><div class="taskTitle">${t.done?'✅ ':' '}${t.name}</div><div class="meta">${t.priority} · ${t.status}${t.duration?' · '+t.duration:''}${t.reminder?' · 🔔':''}</div><div class="taskControls"><button class="mini completeBtn">${t.done?'Reabrir':'Completar'}</button><button class="mini postponeBtn">Posponer</button><button class="mini deleteBtn">Eliminar</button></div></div><span class="tag ${tagClass(t.category)}">${t.category}</span></div>`}
+function bindTaskActions(){document.querySelectorAll('.task').forEach(el=>{const id=Number(el.dataset.id),t=state.tasks.find(x=>x.id===id);el.querySelector('.completeBtn')?.addEventListener('click',()=>{t.done=!t.done;t.status=t.done?'Completada':'Pendiente';save();render();});el.querySelector('.postponeBtn')?.addEventListener('click',()=>{t.date=t.date?addDays(t.date,1):addDays(todayStr(),1);t.status='Pospuesta';save();render();});el.querySelector('.deleteBtn')?.addEventListener('click',()=>{state.tasks=state.tasks.filter(x=>x.id!==id);save();render();});});}
+function renderDay(){const arr=filteredTasks();const allToday=state.tasks.filter(t=>t.date===viewDate());const done=allToday.filter(t=>t.done).length;const pct=allToday.length?Math.round(done/allToday.length*100):0;const next=arr.find(t=>!t.done);document.getElementById('content').innerHTML=`<div class="grid"><section class="section"><h2>${currentView==='tomorrow'?'🌤️ Mañana':'☀️ Hoy'}</h2>${arr.length?arr.map(taskCard).join(''):'<div class="empty">No hay actividades aquí.</div>'}</section><aside><div class="section progressBox"><strong>Progreso del día</strong><div class="meta">${done} de ${allToday.length} completadas</div><div class="bar"><span style="width:${pct}%"></span></div></div><div class="section nextBox"><small>➡️ Próxima acción</small><strong>${next?next.name:'¡Todo listo por ahora! 🌷'}</strong></div><div class="section" style="margin-top:14px"><h2>Accesos rápidos</h2><div class="quick"><button id="quickPending">📌 Ver pendientes</button><button id="quickAdd">＋ Nueva tarea</button><button id="quickNotes">📝 Nota rápida</button><button id="quickTomorrow">🌤️ Ver mañana</button></div></div></aside></div>`;bindTaskActions();document.getElementById('quickPending').onclick=()=>setView('pending');document.getElementById('quickAdd').onclick=openModal;document.getElementById('quickNotes').onclick=()=>setView('notes');document.getElementById('quickTomorrow').onclick=()=>setView('tomorrow');}
+function renderPending(){const arr=filteredTasks();document.getElementById('content').innerHTML=`<section class="section"><h2>📌 Pendientes por programar</h2>${arr.length?arr.map(taskCard).join(''):'<div class="empty">No tienes pendientes sin fecha.</div>'}</section>`;bindTaskActions();}
+function renderWeek(){const base=todayStr();const days=Array.from({length:7},(_,i)=>addDays(base,i));document.getElementById('content').innerHTML=`<section class="section"><h2>🗓️ Mi semana</h2><div class="weekGrid">${days.map(d=>{const ts=state.tasks.filter(t=>t.date===d&&!t.done);return `<div class="dayCard"><h3>${prettyDate(d)}</h3>${ts.length?ts.slice(0,4).map(t=>`<p>• ${t.time? t.time+' ':''}${t.name}</p>`).join(''):'<p>Sin tareas</p>'}</div>`}).join('')}</div></section>`}
+function renderTextArea(title,field,placeholder){document.getElementById('content').innerHTML=`<section class="section notes"><h2>${title}</h2><textarea id="textArea" placeholder="${placeholder}">${state[field]||''}</textarea><div style="margin-top:10px"><button class="primary" id="saveText">Guardar</button></div></section>`;document.getElementById('saveText').onclick=()=>{state[field]=document.getElementById('textArea').value;save();alert('Guardado ✅');}}
+function renderProgress(){const total=state.tasks.length,done=state.tasks.filter(t=>t.done).length,pct=total?Math.round(done/total*100):0;document.getElementById('content').innerHTML=`<section class="section"><h2>📈 Mi progreso</h2><div class="progressBox"><div style="font-size:2rem;font-weight:800">${pct}%</div><div class="meta">${done} de ${total} actividades completadas</div><div class="bar"><span style="width:${pct}%"></span></div></div></section>`}
+function render(){document.getElementById('dateLabel').textContent=prettyDate(currentView==='tomorrow'?addDays(todayStr(),1):todayStr());const todays=state.tasks.filter(t=>t.date===todayStr()&&!t.done).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority));document.getElementById('priorityText').textContent=todays[0]?.name||'Define tu prioridad principal';document.getElementById('filters').style.display=['today','tomorrow','pending'].includes(currentView)?'flex':'none';if(currentView==='today'||currentView==='tomorrow')renderDay();else if(currentView==='pending')renderPending();else if(currentView==='week')renderWeek();else if(currentView==='notes')renderTextArea('📝 Notas rápidas','notes','Escribe ideas, cosas que no quieres olvidar o pensamientos rápidos...');else if(currentView==='rrss')renderTextArea('📱 Calendario RRSS','rrss','Ideas de contenido, lives, publicaciones, campañas...');else if(currentView==='menu')renderTextArea('🥗 Menú semanal','menu','Planifica desayunos, almuerzos, once y lista de compras...');else renderProgress();}
+function setView(v){currentView=v;document.querySelectorAll('.navbtn').forEach(b=>b.classList.toggle('active',b.dataset.view===v));render();}
+document.querySelectorAll('.navbtn').forEach(b=>b.onclick=()=>setView(b.dataset.view));document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{currentFilter=b.dataset.filter;document.querySelectorAll('.chip').forEach(x=>x.classList.toggle('active',x===b));render();});
+const modal=document.getElementById('modal');function openModal(){modal.classList.add('open');document.getElementById('fDate').value=todayStr();document.getElementById('fName').focus();}function closeModal(){modal.classList.remove('open');document.getElementById('formFeedback').textContent='Los avisos dentro de esta web se mostrarán cuando la tengas abierta. Para alertas reales del iPhone, conviene usar recordatorios del sistema.';}
+document.getElementById('openAdd').onclick=openModal;document.getElementById('closeModal').onclick=closeModal;document.getElementById('cancelAdd').onclick=closeModal;modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.getElementById('fReminder').onchange=e=>document.getElementById('reminderOptions').style.display=e.target.checked?'grid':'none';document.getElementById('fReminderWhen').onchange=e=>document.getElementById('customReminder').style.display=e.target.value==='custom'?'grid':'none';
+document.getElementById('saveAdd').onclick=()=>{const name=document.getElementById('fName').value.trim();if(!name){document.getElementById('formFeedback').textContent='⚠️ Escribe el nombre de la actividad.';return;}state.tasks.push({id:Date.now(),name,date:document.getElementById('fDate').value,time:document.getElementById('fTime').value,priority:document.getElementById('fPriority').value,category:document.getElementById('fCategory').value,status:document.getElementById('fStatus').value,duration:document.getElementById('fDuration').value,notes:document.getElementById('fNotes').value,done:false,reminder:document.getElementById('fReminder').checked,reminderWhen:document.getElementById('fReminderWhen').value,reminderTime:document.getElementById('fReminderTime').value});save();['fName','fTime','fDuration','fNotes','fReminderTime'].forEach(id=>document.getElementById(id).value='');document.getElementById('fReminder').checked=false;closeModal();setView('today');};
+document.getElementById('whatNow').onclick=()=>{const candidates=state.tasks.filter(t=>!t.done&&(t.date===todayStr()||!t.date)).sort((a,b)=>priorityRank(a.priority)-priorityRank(b.priority)||(a.time||'99:99').localeCompare(b.time||'99:99'));alert(candidates[0]?`Ahora te recomiendo: ${candidates[0].name}`:'No tienes una acción prioritaria pendiente ahora 🌷');};
+render();
+</script>
+</body>
+</html>
